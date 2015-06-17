@@ -1,0 +1,240 @@
+{% extends "cbd/base.html" %}
+{% load static %}
+
+{% block title %}Cyberbully Detection System - Messages{% endblock %}
+
+{% block pageheading %}Cyberbullying Message Analysis and Coding{% endblock %}
+
+{% block navbar %}
+            <ul class="nav navbar-top-links navbar-right">
+	      {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+	     {% endif %}
+                <!-- /.dropdown -->
+            </ul>
+{% endblock %}
+
+{% block sidenavbar %}
+                        <li>
+                            <a href="/cbd/instructions"><i class="fa fa-sitemap fa-fw"></i> View List of Threads to Code</a>
+                        </li>
+                    </ul>
+{% endblock %}
+
+{% block body_block %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="well">
+                                <h4>Instructions</h4>
+                                  <ul>
+                                    <li>Identify each messages and user profiles as either containing "Evidence of bullying" or "No Evidence of bullying". If you are uncertain select "Uncertain".
+                                    <li>Add Comments for messages and profiles identified as contain cyberbullying traces to share your thoughts on your decision. (optional)
+                                    <li>Check whether acronyms used in the message are in the Urban Dictionary (<a href="http://www.urbandictionary.com/">http://www.urbandictionary.com/</a>) and indicate that you have done so by checking the "Contains an acronym found on Urban Dictionary" checkbox. (optional)
+                                    <li>Once you finish coding a single message, click on the "Save Coding for Message" button for the message.</li>
+                                    <li>Once you finish coding the whole thread, click on the "Complete Thread" button at the bottom of this page.</li>
+                                  <ul>
+                    </div>
+                    <form role="form">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Message Analysis and Coding - Thread: {{threadid}}
+                        </div>
+                        {% for message in messages %}
+                        <div class="panel-body">
+                            <div class="row">
+
+                                <div class="col-lg-6">
+                                    <div class="well">
+
+                                            <h4>Message</h4>
+                                            <p>{{message.body}}</p>
+                                            <p>
+                                                Posted On: {{message.date}}</br>
+                                                <!--Posted By: {{message.username}} (Gender: {{message.sex}}, Age: {{message.age}})</br>-->
+                                                From: City: {{message.city}}, Province: {{message.province}}, Country: {{message.country}}
+                                            </p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+
+
+                                            <div class="form-group">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="evidence_{{message.postid}}" id="evidenceoption_{{message.postid}}" value="Evidence of Bullying Trace">Evidence of bullying
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="evidence_{{message.postid}}" id="evidenceoption_{{message.postid}}" value="No Evidence of Bullying Trace" checked>No Evidence of bullying
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="evidence_{{message.postid}}" id="evidenceoption_{{message.postid}}" value="Uncertain">Uncertain
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                Role of user
+                                                <select name="role_{{message.postid}}" id="roleselect_{{message.postid}}">
+                                                    <option value="Bystander">Bystander</option>
+                                                    <option value="Reinforcer">Reinforcer</option>
+                                                    <option value="Assistant">Assistant</option>
+                                                    <option value="Defender">Defender</option>
+                                                    <option value="Bully">Bully</option>
+                                                    <option value="Victim">Victim</option>
+                                                    <option value="Reporter">Reporter</option>
+                                                    <option value="Accuser">Accuser</option>
+                                                    <option value="None" selected>None</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input name="acronym_{{message.postid}}" id="acronymcheckbox_{{message.postid}}" type="checkbox" value="">Contains an acronym found on Urban Dictionary
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Comment</label>
+                                                <textarea name="comment_{{message.postid}}" id="commenttext_{{message.postid}}" class="form-control" rows="3"></textarea>
+                                            </div>
+                                            <button type="button" onClick="toSave('{{message.postid}}', '{{threadid}}')" class="btn btn-default">Save Coding for Message</button> <span id="status_{{ message.postid }}"></span>
+
+                                </div>
+
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                        <hr/>
+                        {% endfor %}
+                    </div>
+                    <!-- /.panel -->
+                    </form>
+                    <form role="form" method="post" action="/cbd/instructions/">
+                        {% csrf_token %}
+                        <input type="hidden" name="completedthread" value="{{threadid}}" />
+                        <button type="submit" class="btn btn-default">Complete Thread</button>
+                    </form>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+
+{% endblock %}
+
+
+{% block jscripts %}
+    <!--<script src="http://assets.annotateit.org/annotator/v1.2.10/annotator-full.min.js"></script>-->
+    <!-- DataTables JavaScript -->
+    <script src="{% static 'js/plugins/dataTables/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'js/plugins/dataTables/dataTables.bootstrap.js' %}"></script>
+    <script>
+    coded_json = {{saved_codes_json|safe}};
+    function toSave(postid, threadid)
+    {
+        // Create id names
+        evidence_id = "evidenceoption_" + postid;
+        ackcheck_id = "#acronymcheckbox_" + postid;
+        roleselect_id = "#roleselect_" + postid;
+        comment_id = "#commenttext_" + postid;
+        //console.log(evidence_id);
+        // get values
+        evidenceoption = $("input:radio[id='" + evidence_id + "']:checked").val();
+        acronymcheckbox = $(ackcheck_id).is(':checked');
+        comment = $(comment_id).val();
+        role = $(roleselect_id).val();
+
+        ajax_status = "#status_" + postid
+
+        console.log(postid + ", " + evidenceoption + ", " + acronymcheckbox + ", " + comment + ", " + role + ", " + threadid);
+        $(ajax_status).text("Saving...");
+        $.ajax({
+            type: 'POST',
+            url: "/cbd/save_coding/",
+            data: {postid: postid, evidenceoption: evidenceoption, acronymcheckbox: acronymcheckbox, comment: comment, role: role, threadid: threadid},
+            contentType: "application/x-www-form-urlencoded",
+            dataType: 'json'
+        });
+        $(ajax_status).text("Saved.");
+
+    }
+/*
+,
+            success: function(msg) {
+                $(ajax_status).text("Saved.");
+            },
+            error: function(xhr, error){
+                $(ajax_status).text("An error has occured. Please try saving again.");
+            },
+*/
+    $(document).ready(function() {
+        //$('#dataTables-example').dataTable();
+        //$('#socialmediamessage').annotator();
+        //$('#socialmediaprofile').annotator();
+        // Loop thru json
+        for (var key in coded_json) {
+            //console.log(key + " -> " + coded_json[key]);
+            var postid = key;
+            var evidence = "";
+            var acronymcheck = false;
+            var role = "";
+            var comment = ""
+            elements = coded_json[key]
+            for (var key2 in elements) {
+                console.log(key2 + " -> " + elements[key2]);
+                if (key2 == "comment")
+                {
+                    comment = elements[key2];
+                }
+                else if (key2 == "usedurbandict")
+                {
+                    if (elements[key2] == true)
+                    {
+                        acronymcheck = true;
+                    }
+                }
+                else if (key2 == "role")
+                {
+                    role = elements[key2];
+                }
+                else if (key2 == "evidence")
+                {
+                    evidence = elements[key2];
+                }
+            }
+            // databind
+            comment_id = "#commenttext_" + postid;
+            $(comment_id).val(comment);
+
+            evidence_id = "evidenceoption_" + postid;
+            $('input[id=' + evidence_id + ']').val([evidence]);
+
+            ackcheck_id = "#acronymcheckbox_" + postid;
+            $(ackcheck_id).prop('checked', acronymcheck);
+            //console.log(acronymcheck)
+
+            roleselect_id = "#roleselect_" + postid;
+            $(roleselect_id).val(role);
+
+        }
+    });
+
+/*
+            if (coded_json.hasOwnProperty(key)) {
+                console.log(key + " -> " + coded_json[key]);
+            }
+*/
+    </script>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "cbd/base.html" %}
+{% load static %}
+
+{% block title %}Welcome to the Cyberbully Detection System{% endblock %}
+{% block pageheading %}Welcome to the Cyberbully Detection System{% endblock %}
+
+{% block navbar %}
+            <ul class="nav navbar-top-links navbar-right">
+	      {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="/cbd/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+	     {% endif %}
+                <!-- /.dropdown -->
+            </ul>
+{% endblock %}
+
+{% block body_block %}
+    <div class="container">
+        <div class="row">
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Log In</h3>
+
+                    </div>
+                    <div class="panel-body">
+
+                        <form id="login_form" method="post" action="/">
+			{% csrf_token %}
+			{% if bad_details %}
+			<p><strong>Your username and/or password were incorrect!</strong></p>
+			{% elif disabled_account %}
+			<p><strong>Your Cyberbully Detection account is currently disabled; we can't log you in!</strong></p>
+			{% endif %}
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Username" name="username" type="text" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                    </label>
+                                </div>
+                                <!-- Change this to a button or input when using this as a form -->
+			  <button class="btn btn-lg btn-success btn-block" type="submit" name="submit">Login</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

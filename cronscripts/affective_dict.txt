@@ -1,0 +1,1 @@
+{'sadness': 695, 'anticipation': 630, 'disgust': 864, 'positive': 1433, 'anger': 842, 'joy': 729, 'fear': 639, 'trust': 864, 'negative': 1846, 'surprise': 325}

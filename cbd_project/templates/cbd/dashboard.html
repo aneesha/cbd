@@ -1,0 +1,426 @@
+{% extends "cbd/base.html" %}
+{% load static %}
+
+{% block title %}Cyberbully Detection System - Dashboard{% endblock %}
+
+{% block pageheading %}Dashboard{% endblock %}
+
+{% block navbar %}
+            <ul class="nav navbar-top-links navbar-right">
+	      {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+	     {% endif %}
+                <!-- /.dropdown -->
+            </ul>
+{% endblock %}
+
+
+{% block body_block %}
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-support fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ nobullytraces }}</div>
+                                    <div>Bullying Incidents</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+	   <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-comments fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{nosocialmediamessages}}</div>
+                                    <div>Messages</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-user fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ nosocialmediausers}}</div>
+                                    <div>Participants</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-support fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ missclassifiedcount }} </div>
+                                    <div>Missclassified Messages</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Monthly Cyberbullying Incidents
+                            <div class="pull-right">
+
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="morris-area-chart"></div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Cyberbullying Incidents in Last 7 Days
+                            <div class="pull-right">
+
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row">
+
+                                <!-- /.col-lg-4 (nested) -->
+                                <!--<div class="col-lg-8">-->
+                                    <div id="morris-bar-chart"></div>
+                                <!--</div>-->
+                                <!-- /.col-lg-8 (nested) -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-8 -->
+                <div class="col-lg-4">
+
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Cyberbullying Roles
+                        </div>
+                        <div class="panel-body">
+                            <div id="morris-donut-chart"></div>
+                            <!--<a href="#" class="btn btn-default btn-block">View Details</a>-->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="chat-panel panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-comments fa-fw"></i>
+                            Recent Bullying Incidents
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <ul class="dropdown-menu slidedown">
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-refresh fa-fw"></i> Refresh
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <ul class="chat">
+{% for post in recentincidents %}
+                                    <li class="left clearfix">
+                                    <span class="chat-img pull-left">
+                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Username:{{ post.username }}</strong>
+                                            <small class="pull-right text-muted">
+                                                <i class="fa fa-clock-o fa-fw"></i> {{ post.date|date }}
+                                            </small>
+                                        </div>
+                                        <p>
+                                            {{ post.body }}
+                                        </p>
+                                    </div>
+                                </li>
+{% empty %}
+    <li>No recent incidents.</li>
+{% endfor %}
+                            </ul>
+                        </div>
+                        <!-- /.panel-body -->
+
+                        <!-- /.panel-footer -->
+                    </div>
+                    <!-- /.panel .chat-panel -->
+                </div>
+                <!-- /.col-lg-4 -->
+            </div>
+            <!-- /.row -->
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Topics - Cyberbullying
+                            <div class="pull-right">
+
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <!-- Insert Topics Here -->
+                            {{tm_cyber_str|safe}}
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+                </div>
+                <!-- /.col-lg-8 -->
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Affective Analysis - Cyberbullying
+                        </div>
+                        <div class="panel-body">
+                            <div id="affective_cyberbullying" style="min-width: 400px; max-width: 600px; height: 400px; margin: 0 auto"></div>
+                            <!--<a href="#" class="btn btn-default btn-block">View Details</a>-->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Topics - Non Cyberbullying
+                            <div class="pull-right">
+
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <!-- Insert Topics Here -->
+                            {{tm_str|safe}}
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+                </div>
+                <!-- /.col-lg-8 -->
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Affective Analysis - Non Cyberbullying
+                        </div>
+                        <div class="panel-body">
+                            <div id="affective" style="min-width: 400px; max-width: 600px; height: 400px; margin: 0 auto"></div>
+                            <!--<a href="#" class="btn btn-default btn-block">View Details</a>-->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+
+            </div>
+            <!-- /.row -->
+{% endblock %}
+
+{% block jscripts %}
+{% autoescape off %}
+<script>
+$(function() {
+
+    Morris.Area({
+        element: 'morris-area-chart',
+        data: {{ months_dict }},
+        xkey: 'month',
+        ykeys: ['incidents'],
+        labels: ['incidents'],
+        pointSize: 2,
+        hideHover: 'auto',
+        resize: true
+    });
+
+    Morris.Donut({
+        element: 'morris-donut-chart',
+        data:  {{ rolejson }},
+        resize: true
+    });
+
+    Morris.Bar({
+        element: 'morris-bar-chart',
+        data: {{ weekts_dict }},
+        xkey: 'y',
+        ykeys: ['a'],
+        labels: ['Series A'],
+        hideHover: 'auto',
+        resize: true
+    });
+
+    $('#affective').highcharts({
+
+        chart: {
+            polar: true,
+            type: 'line'
+        },
+
+        title: {
+            text: 'Affective Senses',
+            x: -80
+        },
+
+        pane: {
+            size: '80%'
+        },
+
+        xAxis: {
+            categories: ['sadness', 'anticipation', 'disgust', 'positive',
+                    'anger', 'joy', 'fear', 'trust', 'negative', 'surprise'],
+            tickmarkPlacement: 'on',
+            lineWidth: 0
+        },
+        yAxis: {
+            gridLineInterpolation: 'polygon',
+            lineWidth: 0,
+            min: 0
+        },
+
+        tooltip: {
+            shared: true,
+            pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+        },
+
+        series: [{
+            name: 'Non Cyberbullying Posts',
+            data: [{{affective_count_list_str|safe}}],
+            pointPlacement: 'on'
+        }]
+
+    });
+
+    $('#affective_cyberbullying').highcharts({
+
+        chart: {
+            polar: true,
+            type: 'line'
+        },
+
+        title: {
+            text: 'Affective Senses',
+            x: -80
+        },
+
+        pane: {
+            size: '80%'
+        },
+
+        xAxis: {
+            categories: ['sadness', 'anticipation', 'disgust', 'positive',
+                    'anger', 'joy', 'fear', 'trust', 'negative', 'surprise'],
+            tickmarkPlacement: 'on',
+            lineWidth: 0
+        },
+        yAxis: {
+            gridLineInterpolation: 'polygon',
+            lineWidth: 0,
+            min: 0
+        },
+
+        tooltip: {
+            shared: true,
+            pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+        },
+
+        series: [{
+            name: 'Cyberbullying Posts',
+            data: [{{affective_cyber_count_list_str|safe}}],
+            pointPlacement: 'on'
+        }]
+
+    });
+
+});
+</script>
+{% endautoescape %}
+{% endblock %}
