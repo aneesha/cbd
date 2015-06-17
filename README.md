@@ -8,6 +8,7 @@ This project was funded by a small grant provided by AUDA Foundation for a proje
 * A machine learning classification algorithm (eg Support Vector Machine) can be trained to identify cyberbullying messages and then the classified messages can be imported into a database and is summarised on a dashboard. 
 * The dashboard displays timeseries data, topic models (for cyberbullying messages and non cyber bullying messages) and a summary of the affective dimensions found in the test messages (for cyberbullying messages and non cyber bullying messages)
 * Cron scripts (in the cronscripts) folder that must be scheduled to perform topic modeling and affective sentiment analysis (i.e. topicmodelandaffectivelexicon.py)
+* A moderation role that is able to mark classified messages as mis-classified. 
 * A sample python script to get data from Twitter (i.e. injest_twitter.py)
 
 ![Dashbaord](https://github.com/aneesha/cbd/blob/master/dashboard.png "Cyberbullying Dashboard")
