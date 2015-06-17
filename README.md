@@ -10,7 +10,7 @@ This project was funded by a small grant provided by AUDA Foundation for a proje
 * Cron scripts (in the cronscripts) folder that must be scheduled to perform topic modeling and affective sentiment analysis (i.e. topicmodelandaffectivelexicon.py)
 * A sample python script to get data from Twitter (i.e. injest_twitter.py)
 
-![Dashbaord](https://github.com/aneesha/cbd/edit/master/dashboard.png "Cyberbullying Dashboard")
+![Dashbaord](https://github.com/aneesha/cbd/blob/master/dashboard.png "Cyberbullying Dashboard")
 
 ## Installation Requirements
 * Django
