@@ -23,7 +23,7 @@ This project was funded by a small grant provided by AUDA Foundation for a proje
 In order to build a cyberbullying classifier a manually labelled dataset is required. A few labeled datasets are available (http://chatcoder.com/DataDownload) but it is recommended that you create and label your own dataset based upon the social media platform that you need to integrate with. Weka can be used to train and evaluate the classification algorithm. It is recommended that training and testing be performed with a Support Vector Machine, Mutinomial Naive Bayes and Random Forest. A good tutorial to follow is https://www.youtube.com/watch?v=IY29uC4uem8
 
 ## Topic Modeling and Affective Sentiment Analysis
-* The gensim library is used to perform topic modeling using the Latent Dirichlet Allocation algorithm. The dashboard displays topics for non cyberbullying messages and cyberbullying messages.
+* The gensim library is used to perform topic modeling using the Latent Dirichlet Allocation algorithm. The dashboard displays topics for non cyberbullying messages and cyberbullying messages. 10 topics are displayed along with 5 of the top words in the topic.
 * The affective sentiment analysis uses a publically available NRC Word-Emotion Association Lexicon - Version 0.92 (http://www.saifmohammad.com/WebPages/ResearchInterests.html). Words in the corpus are matched to the lexicon and counted for both non cyberbullying messages and cyberbullying messages in topicmodelandaffectivelexicon.py. The resulting counts across the affective dimensions are displayed on a radar plot on the dashboard.
 
 ## Dashboard Template
